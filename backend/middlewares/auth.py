@@ -42,7 +42,7 @@ class AuthMiddleware(MiddlewareProtocol):
     def __init__(self, app, roles: Optional[set] = None, can_call_without_auth=False):
         self.app = app
         self.roles = roles if roles else set()
-        self.can_call_without_auth = False
+        self.can_call_without_auth = WITHOUT_AUTH_STATE
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         response = self.app

@@ -9,9 +9,14 @@ from backend.logs import create_logger
 LOGGER = create_logger(__name__)
 
 
+def _payment_callback(sender_id, receiver_id, amount):
+    LOGGER.info(f"Send amount {amount} FROM {sender_id} to {receiver_id}")
+
+
 def _return_money(df: pd.DataFrame):
     for _, refund in df.iterrows():
         LOGGER.warning(f"Refund for {refund.to_dict()}")
+        _payment_callback(sender_id=refund["builder_id"], receiver_id=refund["user_id"], amount=refund["money"])
 
 
 def worker():
