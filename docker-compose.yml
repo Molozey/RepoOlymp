@@ -68,6 +68,31 @@ services:
     networks:
       - linknet
 
+  frontend:
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+      args:
+        progress: plain
+
+    volumes:
+      - './frontend/app:/frontend/app'
+
+    ports:
+      - "8501:8501"
+
+    healthcheck:
+      test: curl --fail http://localhost:8501/_stcore/health || exit 1
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - linknet
+
+    env_file: .env
+
 networks:
   linknet:
     driver: bridge
