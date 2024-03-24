@@ -1,2 +1,7 @@
 litestar
 uvicorn
+pyjwt
+uvicorn
+pandas
+psycopg2-binary
+SQLAlchemy
