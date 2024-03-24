@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+#  backend-litestar:
+#    build:
+#      context: ./backend
+#      dockerfile: ./Dockerfile
+#      args:
+#        progress: plain
+#
+#    volumes:
+#      - './backend:/app'
+
+  backend-fastapi:
+    restart: always
+    build:
+      context: ./apifast
+      dockerfile: ./Dockerfile
+      args:
+        progress: plain
+
+    volumes:
+      - './apifast:/apifast'
+
+    ports:
+      - "${FAST_API_PORT}:${FAST_API_PORT}"
+
+    healthcheck:
+      test: curl --fail http://localhost:${FAST_API_PORT}/testing || exit 1
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - linknet
+
+    env_file: .env
+
+
+  database:
+    image: postgres
+    restart: always
+
+    volumes:
+      - ./database/volume:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+
+    ports:
+      - "5432:5432"
+    networks:
+      - linknet
+
+networks:
+  linknet:
+    driver: bridge
