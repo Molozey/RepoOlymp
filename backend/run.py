@@ -1,6 +1,7 @@
 from backend.logs import create_logger
 from backend.controllers.auth import AuthController
 from backend.controllers.Auditor import AuditorController
+from backend.controllers.Testing import TestingController
 from litestar import Litestar
 from litestar.params import Parameter
 from litestar.openapi import OpenAPIConfig
@@ -16,6 +17,7 @@ def app():
         route_handlers=[
             AuthController,
             AuditorController,
+            TestingController,
         ],
         openapi_config=OpenAPIConfig(
             title="AuthService", version="0.0.1", description="AuthService API"

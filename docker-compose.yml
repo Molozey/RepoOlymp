@@ -1,32 +1,22 @@
 version: "3.9"
 
 services:
-#  backend-litestar:
-#    build:
-#      context: ./backend
-#      dockerfile: ./Dockerfile
-#      args:
-#        progress: plain
-#
-#    volumes:
-#      - './backend:/app'
-
-  backend-fastapi:
+  backend-litestar:
     restart: always
     build:
-      context: ./apifast
+      context: ./backend
       dockerfile: ./Dockerfile
       args:
         progress: plain
 
     volumes:
-      - './apifast:/apifast'
+      - './backend:/backend'
 
     ports:
-      - "${FAST_API_PORT}:${FAST_API_PORT}"
+      - "${LITESTAR_API_PORT}:${LITESTAR_API_PORT}"
 
     healthcheck:
-      test: curl --fail http://localhost:${FAST_API_PORT}/testing || exit 1
+      test: curl --fail http://localhost:${LITESTAR_API_PORT}/testing || exit 1
       interval: 10s
       timeout: 10s
       start_period: 10s
@@ -35,6 +25,31 @@ services:
       - linknet
 
     env_file: .env
+
+#  backend-fastapi:
+#    restart: always
+#    build:
+#      context: ./apifast
+#      dockerfile: ./Dockerfile
+#      args:
+#        progress: plain
+#
+#    volumes:
+#      - './apifast:/apifast'
+#
+#    ports:
+#      - "${FAST_API_PORT}:${FAST_API_PORT}"
+#
+#    healthcheck:
+#      test: curl --fail http://localhost:${FAST_API_PORT}/testing || exit 1
+#      interval: 10s
+#      timeout: 10s
+#      start_period: 10s
+#      retries: 3
+#    networks:
+#      - linknet
+#
+#    env_file: .env
 
 
   database:
