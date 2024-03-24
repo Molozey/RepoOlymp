@@ -5,12 +5,15 @@ from backend.controllers.Testing import TestingController
 from litestar import Litestar
 from litestar.params import Parameter
 from litestar.openapi import OpenAPIConfig
+from auto_returner_algo import serve
 import uvicorn
 import os
 
 LOGGER = create_logger(__name__)
 
 def app():
+    LOGGER.info("Starting refunder thread")
+    refunder_thread = serve()
     LOGGER.info("Starting app")
     return Litestar(
         debug=True,
